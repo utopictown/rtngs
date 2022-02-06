@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rtngs</title>
+    <link rel="stylesheet" href="styles.scss" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <main>
+      <section class="hero-container">
+        <h1>The Minimalist Entrepreneur</h1>
+        <div class="hero-review padding">
+          <p class="rating">3.8</p>
+          <div class="stars">
+            <div class="star-wrapper">
+              <span class="star"></span>
+            </div>
+            <div class="star-wrapper">
+              <span class="star"></span>
+            </div>
+            <div class="star-wrapper">
+              <span class="star"></span>
+            </div>
+            <div class="star-wrapper">
+              <span class="star"></span>
+            </div>
+            <div class="star-wrapper">
+              <span class="empty-star"></span>
+            </div>
+          </div>
+          <button id="add-review" class="button">Add review</button>
+        </div>
+        <div class="spacer-wrapper flex">
+          <div class="spacer w-full"></div>
+        </div>
+      </section>
+      <section class="reviews-container">
+        <h3>Reviews</h3>
+        <div class="review flex">
+          <div class="review-item flex">
+            <div class="stars">
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="empty-star"></span>
+              </div>
+            </div>
+            <span><b>4</b>, book was full of fluff</span>
+          </div>
+        </div>
+        <div class="review flex">
+          <div class="review-item flex">
+            <div class="stars">
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="empty-star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="empty-star"></span>
+              </div>
+            </div>
+            <span><b>3</b>, book was full of fluff</span>
+          </div>
+        </div>
+        <div class="review flex">
+          <div class="review-item flex">
+            <div class="stars">
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="star"></span>
+              </div>
+              <div class="star-wrapper">
+                <span class="empty-star"></span>
+              </div>
+            </div>
+            <span><b>4</b>, book was full of fluff</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <main id="modal">
+      <section class="modal-container">
+        <h1>What’s your rating?</h1>
+        <span>Rating</span>
+        <span></span>
+        <span>Rating</span>
+        <textarea
+          name="input-review"
+          id="input-review"
+          cols="30"
+          rows="10"
+          placeholder="Start typing..."
+        ></textarea>
+        <button id="submit-review" class="button submit-review">
+          Submit review
+        </button>
+      </section>
+    </main>
+  </body>
+</html>
