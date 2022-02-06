@@ -25,7 +25,7 @@ button:hover {
   border: 1px solid #b5b5b5;
   background-color: #b5b5b530;
   box-shadow: 1px 1px 2px 1px #999999;
-  transition: background-color 0.2s ease-in, box-shadow 0.1s ease-in;
+  transition: background-color 0.2s ease-in, box-shadow 0.2s ease-in-out;
 }
 
 .flex {
@@ -138,7 +138,6 @@ button:hover {
   background-color: #00000038;
   width: 100vw;
   height: 100vh;
-  z-index: 999;
   align-content: center;
   // transition: opacity 0.2s ease-in-out;
 }

@@ -4,6 +4,12 @@ modal.style.zIndex = -1;
 const modalContainer = modal.getElementsByClassName("modal-container")[0];
 modalContainer.style.bottom = "-100vh";
 
+modal.addEventListener("click", function(e) { 
+  if (e.target.id && e.target.id === "modal") {
+    toggle(false);
+  }
+})
+
 const addButton = document.getElementById("add-review");
 addButton.addEventListener("click", () => toggle(true));
 
@@ -18,6 +24,6 @@ function toggle(isActive = true) {
   } else {
     modal.style.opacity = 0;
     modal.style.zIndex = -1;
-    modalContainer.style.bottom = "-100vh";
+    modalContainer.style.bottom = "-50vh";
   }
 }
