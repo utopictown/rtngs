@@ -165,6 +165,53 @@ button:hover {
     margin-bottom: 1rem;
   }
 
+  .input-rate {
+    position: relative;
+    height: 2rem;
+    display: flex;
+
+    div {
+      margin-right: 1.4rem;
+    }
+
+    label {
+      background-image: url("./assets/empty-star.svg");
+      width: 1.2rem;
+      height: 1.2rem;
+      position: absolute;
+      background-size: contain;
+    }
+
+    label.active {
+      background-image: url("./assets/star.svg");
+      width: 1.2rem;
+      height: 1.2rem;
+      position: absolute;
+      background-size: contain;
+      transition: background-image 0.2s ease-in-out;
+    }
+
+    direction: rtl;
+    margin-left: 1rem;
+    justify-content: left;
+
+    .input-star:hover,
+    .input-star:hover ~ .input-star {
+      label {
+        background-image: url("./assets/star.svg");
+        width: 1.2rem;
+        height: 1.2rem;
+        position: absolute;
+        background-size: contain;
+        transition: background-image 0.2s ease-in-out;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+
   textarea {
     border: 0;
     margin-bottom: 1rem;
