@@ -1,6 +1,6 @@
 {
-    "python.analysis.extraPaths": [
-        "./__pypackages__/3.9/lib"
-    ],
-    "editor.formatOnSave": true
+  "python.analysis.extraPaths": ["./__pypackages__/3.9/lib"],
+  "editor.formatOnSave": true,
+  "prettier.printWidth": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
