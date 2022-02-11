@@ -1,3 +1,4 @@
+from math import floor
 from urllib import request
 from flask import Flask, jsonify, request
 from models.reviews import Reviews
@@ -11,18 +12,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'GET':
-        data = Reviews.query.all()
-        return jsonify({'data': data})
+        reviews = Reviews.query.all()
+        rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews))
 
+        return jsonify({'data': reviews, 'ratingAvg': rating_avg})
     if request.method == 'POST':
-        rating = request.json['rating']
-        description = request.json['description']
+        try:
+            rating = request.json['rating']
+            description = request.json['description']
 
-        review = Reviews(description=description, rating=rating)
-        db.session.add(review)
-        db.session.commit()
+            review = Reviews(description=description, rating=rating)
+            db.session.add(review)
+            db.session.commit()
 
-        return jsonify({'data': 'Submission created'})
+            return jsonify({'message': 'Submission created'})
+        except:
+            return jsonify({'message': 'Submission failed'})
     else:
         return "Invalid HTTP method."
 
