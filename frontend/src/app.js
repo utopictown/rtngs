@@ -5,6 +5,8 @@ const reviewsWrapper = document.getElementById("reviews-wrapper");
 const addButton = document.getElementById("add-review");
 const submitReview = document.getElementById("submit-review");
 const starReview = document.querySelectorAll(".input-star label");
+const heroRatingEl = document.getElementById("hero-rating");
+const heroStarsEl = document.getElementById("hero-stars");
 // end of selector
 
 // elements
@@ -133,6 +135,8 @@ const loadReviews = async () => {
   data.data.forEach((review) => {
     reviewsWrapper.innerHTML += renderReview(review.rating, review.description);
   });
+  heroRatingEl.innerHTML = data.ratingAvg;
+  heroStarsEl.innerHTML = renderStars(data.ratingAvg);
 };
 
 const fetchAPI = async (method, url, payload = {}) => {
