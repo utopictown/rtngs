@@ -37,3 +37,6 @@ def home():
             return jsonify({'message': 'Submission failed'}), 400
     else:
         return "Invalid HTTP method."
+
+if __name__ == "__main__":
+    app.run(debug=False, host='0.0.0.0')
