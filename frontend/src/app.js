@@ -1,14 +1,25 @@
 // selector
 const modal = document.getElementById("modal");
 const modalContainer = modal.getElementsByClassName("modal-container")[0];
-const reviewsContainer = document.getElementsByClassName("reviews-container")[0];
+const reviewsWrapper = document.getElementById("reviews-wrapper");
 const addButton = document.getElementById("add-review");
 const submitReview = document.getElementById("submit-review");
 const starReview = document.querySelectorAll(".input-star label");
 // end of selector
 
+// elements
+const starElements = `<div class="star-wrapper">
+                        <span class="star"></span>
+                      </div>`;
+
+const emptyStarElements = `<div class="star-wrapper">
+                            <span class="empty-star"></span>
+                          </div>`;
+// end of elements
+
 // variables
 const MAX_STARS = 5;
+const API_URL = "http://127.0.0.1:5000";
 // end of variables
 
 // style modification
@@ -77,12 +88,51 @@ const handleSubmitButtonClick = async (e) => {
   const description = document.getElementById("input-review").value;
 
   if (rating && description) {
-    await fetchAPI("POST", "http://127.0.0.1:5000", {
+    await fetchAPI("POST", API_URL, {
       rating,
       description,
     });
+    reviewsWrapper.innerHTML += renderReview(rating, description);
     toggle(false);
   }
+};
+
+const renderReview = (rating, description) => {
+  const stars = renderStars(rating);
+  return `
+  <div class="review flex">
+    <div class="review-item flex">
+      <div class="stars">
+      ${stars}
+      </div>
+      <span>
+        <b>${rating}</b>, ${description}
+      </span>
+    </div>
+  </div>
+  `;
+};
+
+const renderStars = (rating) => {
+  let stars = Array(Math.floor(rating))
+    .fill()
+    .map(() => starElements)
+    .join("");
+
+  if (Math.floor(rating) < MAX_STARS) {
+    stars += Array(MAX_STARS - Math.floor(rating))
+      .fill()
+      .map(() => emptyStarElements)
+      .join("");
+  }
+  return stars;
+};
+
+const loadReviews = async () => {
+  const data = await fetchAPI("GET", API_URL);
+  data.data.forEach((review) => {
+    reviewsWrapper.innerHTML += renderReview(review.rating, review.description);
+  });
 };
 
 const fetchAPI = async (method, url, payload = {}) => {
@@ -112,44 +162,7 @@ const fetchAPI = async (method, url, payload = {}) => {
 };
 
 const init = async () => {
-  const data = await fetchAPI("GET", "http://127.0.0.1:5000");
-  data.data.forEach((review) => {
-    let stars = Array(Math.floor(review.rating))
-      .fill()
-      .map(
-        () =>
-          `<div class="star-wrapper">
-            <span class="star"></span>
-          </div>`
-      )
-      .join("");
-
-    if (Math.floor(review.rating) < MAX_STARS) {
-      stars += Array(MAX_STARS - Math.floor(review.rating))
-        .fill()
-        .map(
-          () =>
-            `<div class="star-wrapper">
-          <span class="empty-star"></span>
-        </div>`
-        )
-        .join("");
-    }
-
-    const reviewElement = `
-      <div class="review flex">
-        <div class="review-item flex">
-          <div class="stars">
-          ${stars}
-          </div>
-          <span>
-            <b>${review.rating}</b>, ${review.description}
-          </span>
-        </div>
-      </div>
-      `;
-    reviewsContainer.innerHTML += reviewElement;
-  });
+  await loadReviews();
 };
 
 init();
