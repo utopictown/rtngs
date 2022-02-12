@@ -1,3 +1,6 @@
 __pycache__
 __pypackages__
 rtngs.db
+.env
+*.db
+*.sqlite3
