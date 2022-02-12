@@ -20,7 +20,7 @@ db.create_all()
 def home():
     if request.method == 'GET':
         reviews = Reviews.query.all()
-        rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews))
+        rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews)) if len(reviews) else 0
 
         return jsonify({'data': reviews, 'ratingAvg': rating_avg})
     if request.method == 'POST':
