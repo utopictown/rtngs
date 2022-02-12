@@ -7,6 +7,7 @@ const submitReview = document.getElementById("submit-review");
 const starReview = document.querySelectorAll(".input-star label");
 const heroRatingEl = document.getElementById("hero-rating");
 const heroStarsEl = document.getElementById("hero-stars");
+const inputReview = document.getElementById("input-review");
 // end of selector
 
 // elements
@@ -50,6 +51,7 @@ const toggle = (isActive = true) => {
   } else {
     rating = 0;
     resetStar();
+    inputReview.value = "";
     modal.style.opacity = 0;
     modal.style.zIndex = -1;
     modalContainer.style.bottom = "-50vh";
@@ -57,8 +59,12 @@ const toggle = (isActive = true) => {
 };
 
 const resetStar = () => {
+  const inputRate = document.querySelectorAll("input[name=rate]");
   for (let i = 0; i < starCount; i++) {
-    if (starReview[i].classList.contains("active")) starReview[i].classList.remove("active");
+    if (starReview[i].classList.contains("active")) {
+      starReview[i].classList.remove("active");
+    }
+    inputRate[i].checked = false;
   }
 };
 
@@ -87,7 +93,7 @@ const handleSubmitButtonClick = async (e) => {
   e.preventDefault();
   const rateSelector = document.querySelector("input[name=rate]:checked");
   const rating = rateSelector ? rateSelector.value : null;
-  const description = document.getElementById("input-review").value;
+  const description = inputReview.value;
 
   if (rating && description) {
     await fetchAPI("POST", API_URL, {
