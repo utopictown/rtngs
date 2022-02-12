@@ -22,7 +22,7 @@ const emptyStarElements = `<div class="star-wrapper">
 
 // variables
 const MAX_STARS = 5;
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = process.env.API_URL;
 // end of variables
 
 // style modification
