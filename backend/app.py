@@ -1,6 +1,8 @@
 from math import floor
+import os
 from urllib import request
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from models.reviews import Reviews
 from db import db
 
@@ -8,6 +10,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rtngs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+CORS(app, origins=os.getenv('ALLOWED_URL').split(','))
+
+db.app = app
+db.init_app(app)
+db.create_all()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -25,13 +32,8 @@ def home():
             db.session.add(review)
             db.session.commit()
 
-            return jsonify({'message': 'Submission created'})
+            return jsonify({'message': 'Submission created'}) 
         except:
-            return jsonify({'message': 'Submission failed'})
+            return jsonify({'message': 'Submission failed'}), 400
     else:
         return "Invalid HTTP method."
-
-
-db.app = app
-db.init_app(app)
-db.create_all()
