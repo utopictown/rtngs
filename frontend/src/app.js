@@ -115,9 +115,9 @@ const renderReview = (rating, description) => {
       <div class="stars">
       ${stars}
       </div>
-      <span>
-        <b>${rating}</b>, ${description}
-      </span>
+      <p>
+        <b>${rating}</b>, <span>${description}</span>
+      </p>
     </div>
   </div>
   `;
