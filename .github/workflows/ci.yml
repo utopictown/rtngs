@@ -23,5 +23,5 @@ jobs:
             ./run.sh
             echo "build frontend..."
             rm -rf /frontend/dist
-            yarn --cwd /frontend build
+            yarn --cwd frontend build
             echo "Deployment success."
