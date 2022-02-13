@@ -96,11 +96,13 @@ const handleSubmitButtonClick = async (e) => {
   const description = inputReview.value;
 
   if (rating && description) {
-    await fetchAPI("POST", API_URL, {
+    const data = await fetchAPI("POST", API_URL, {
       rating,
       description,
     });
     reviewsWrapper.innerHTML += renderReview(rating, description);
+    heroRatingEl.innerHTML = data.ratingAvg;
+    heroStarsEl.innerHTML = renderStars(data.ratingAvg);
     toggle(false);
   }
 };
