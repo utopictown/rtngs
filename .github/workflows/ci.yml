@@ -20,13 +20,8 @@ jobs:
             echo "sync codes..."
             git pull
             echo "reload api..."
-            pm2 reload api-rtngs
-            pm2 save
-            pm2 startup
+            ./run.sh
             echo "build frontend..."
             rm -rf /frontend/dist
             yarn --cwd /frontend build
-            echo "update static production..."
-            sudo rm -rf /var/www/rtngs
-            sudo cp -R /frontend/dist /var/www/rtngs
             echo "Deployment success."
