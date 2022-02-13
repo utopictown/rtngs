@@ -22,7 +22,7 @@ def home():
         reviews = Reviews.query.all()
         rating_avg = get_average_rating(reviews)
 
-        return jsonify({'data': reviews, 'ratingAvg': rating_avg})
+        return jsonify({'data': reviews, 'ratingAvg': rating_avg, 'dummy': "ok"})
     if request.method == 'POST':
         try:
             rating = request.json['rating']
