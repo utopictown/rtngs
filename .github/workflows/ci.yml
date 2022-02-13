@@ -14,14 +14,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: |
-            echo "entering rtngs directory..."
-            cd rtngs
-            echo "sync codes..."
-            git pull
-            echo "reload api..."
-            ./run.sh
-            echo "build frontend..."
-            rm -rf /frontend/dist
-            yarn --cwd frontend build
-            echo "Deployment success."
+          script: ./rtngs.sh
