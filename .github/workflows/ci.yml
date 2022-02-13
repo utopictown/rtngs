@@ -15,10 +15,17 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
+            echo "entering rtngs directory..."
             cd rtngs
+            echo "sync codes..."
             git pull
+            echo "entering frontend..."
             cd frontend
+            echo "build frontend..."
             yarn build
+            echo "update static production..."
             sudo rm -rf /var/www/rtngs
             sudo cp -R dist /var/www/rtngs
+            echo "reload api..."
             pm2 restart rtngs-api
+            echo "Deployment success."
