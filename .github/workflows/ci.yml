@@ -1,0 +1,24 @@
+name: rtngs CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy app to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd rtngs
+            git pull
+            cd frontend
+            yarn build
+            sudo rm -rf /var/www/rtngs
+            sudo cp -R dist /var/www/rtngs
+            pm2 restart rtngs-api
