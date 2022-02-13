@@ -20,7 +20,7 @@ db.create_all()
 def home():
     if request.method == 'GET':
         reviews = Reviews.query.all()
-        rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews)) if len(reviews) else 0
+        rating_avg = get_average_rating(reviews)
 
         return jsonify({'data': reviews, 'ratingAvg': rating_avg})
     if request.method == 'POST':
@@ -33,13 +33,16 @@ def home():
             db.session.commit()
 
             reviews = Reviews.query.all()
-            rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews)) if len(reviews) else 0
+            rating_avg = get_average_rating(reviews)
 
             return jsonify({'data': review,'ratingAvg': rating_avg, 'message': 'Submission created'}) 
         except:
             return jsonify({'message': 'Submission failed'}), 400
     else:
         return "Invalid HTTP method."
+
+def get_average_rating(list = []):
+    return floor(sum([data.rating for data in list]) / len(list)) if len(list) else 0
 
 if __name__ == "__main__":
     app.run(debug=False, host='0.0.0.0')
