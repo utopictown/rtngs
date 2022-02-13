@@ -32,7 +32,10 @@ def home():
             db.session.add(review)
             db.session.commit()
 
-            return jsonify({'message': 'Submission created'}) 
+            reviews = Reviews.query.all()
+            rating_avg = floor(sum([data.rating for data in reviews]) / len(reviews)) if len(reviews) else 0
+
+            return jsonify({'data': review,'ratingAvg': rating_avg, 'message': 'Submission created'}) 
         except:
             return jsonify({'message': 'Submission failed'}), 400
     else:
