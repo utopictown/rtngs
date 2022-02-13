@@ -1,4 +1,4 @@
-name: rtngs CI
+name: rtngs CD
 on:
   push:
     branches: [main]
@@ -19,13 +19,14 @@ jobs:
             cd rtngs
             echo "sync codes..."
             git pull
-            echo "entering frontend..."
-            cd frontend
+            echo "reload api..."
+            pm2 reload api-rtngs
+            pm2 save
+            pm2 startup
             echo "build frontend..."
-            yarn build
+            rm -rf /frontend/dist
+            yarn --cwd /frontend build
             echo "update static production..."
             sudo rm -rf /var/www/rtngs
-            sudo cp -R dist /var/www/rtngs
-            echo "reload api..."
-            pm2 restart rtngs-api
+            sudo cp -R /frontend/dist /var/www/rtngs
             echo "Deployment success."
