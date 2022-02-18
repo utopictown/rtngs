@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Review from "./Review";
+import Stars from "./Stars";
 
 export function App() {
   const initialInputRating = { rating: null, description: "" };
@@ -37,12 +39,16 @@ export function App() {
   };
 
   const handleSubmit = async () => {
-    await fetchAPI("POST", API_URL, inputRating);
-    setRatings({ ...ratings, data: [...ratings.data, inputRating] });
+    const response = await fetchAPI("POST", API_URL, inputRating);
+    setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
     setShowModal(false);
     setActiveStar(null);
     setInputRating(initialInputRating);
     setStarState(initialStarState);
+  };
+
+  const handleModalClick = (e) => {
+    if (e.target.id && e.target.id === "modal") setShowModal(false);
   };
 
   const fetchAPI = async (method, url, payload = {}) => {
@@ -81,13 +87,7 @@ export function App() {
               {ratings ? ratings.ratingAvg : ""}
             </p>
             <div id="hero-stars" className="stars">
-              {Array(5)
-                .fill()
-                .map((_, i) => (
-                  <div key={i} className="star-wrapper">
-                    <span className="star"></span>
-                  </div>
-                ))}
+              <Stars count={ratings ? Math.floor(ratings.ratingAvg) : 0} />
             </div>
             <button id="add-review" className="button" onClick={() => setShowModal(!showModal)}>
               Add review
@@ -101,34 +101,13 @@ export function App() {
           <h3>Reviews</h3>
           <div id="reviews-wrapper">
             {ratings && ratings.data.length
-              ? ratings.data.map((rating, key) => {
-                  return (
-                    <React.Fragment key={key}>
-                      <div className="review flex">
-                        <div className="review-item flex">
-                          <div className="stars">
-                            {Array(5)
-                              .fill()
-                              .map((_, i) => (
-                                <div key={i} className="star-wrapper">
-                                  <span className="star"></span>
-                                </div>
-                              ))}
-                          </div>
-                          <p>
-                            <b>{rating.rating}</b>, <span>{rating.description}</span>
-                          </p>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  );
-                })
+              ? ratings.data.map((rating, key) => <Review key={key} rating={rating} />)
               : null}
           </div>
         </section>
       </main>
       {showModal ? (
-        <main id="modal">
+        <main id="modal" onClick={(e) => handleModalClick(e)}>
           <section className="modal-container">
             <h1>What’s your rating?</h1>
             <span>Rating</span>
