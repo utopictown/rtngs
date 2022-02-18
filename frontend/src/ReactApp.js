@@ -13,6 +13,7 @@ export function App() {
   const [stars, setStars] = useState(initialStars);
   const [activeStar, setActiveStar] = useState(null);
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages);
+  const [canSubmit, setCanSubmit] = useState(false);
 
   const API_URL = process.env.API_URL;
 
@@ -55,9 +56,10 @@ export function App() {
 
     setErrorMessages({ ...errorMessages, ...err });
 
-    const canSubmit = Object.keys(err).filter((keys) => err[keys] !== "").length > 0 ? false : true;
+    const _canSubmit = checkIfErrorExist(err) ? false : true;
+    setCanSubmit(_canSubmit);
 
-    if (canSubmit) {
+    if (_canSubmit) {
       const response = await fetchAPI("POST", API_URL, inputRating);
       setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
       setShowModal(false);
@@ -67,6 +69,10 @@ export function App() {
 
   const handleModalClick = (e) => {
     if (e.target.id && e.target.id === "modal") setShowModal(false);
+  };
+
+  const checkIfErrorExist = (err) => {
+    return Object.keys(err).filter((keys) => err[keys] !== "").length > 0;
   };
 
   const fetchAPI = async (method, url, payload = {}) => {
@@ -140,25 +146,25 @@ export function App() {
                 })
                 .reverse()}
             </span>
-            <span>Rating</span>
+            <span>Review</span>
             <textarea
               name="input-review"
               id="input-review"
               cols="30"
-              rows="10"
+              rows="6"
               placeholder="Start typing..."
               onChange={(e) => handleInputDescription(e)}
             ></textarea>
             <button id="submit-review" className="button submit-review" onClick={() => handleSubmit()}>
               Submit review
             </button>
-            {Object.keys(errorMessages).length > 0
-              ? Object.keys(errorMessages).map((error, i) => (
+            {canSubmit
+              ? null
+              : Object.keys(errorMessages).map((error, i) => (
                   <span key={i} className="error">
                     {errorMessages[error]}
                   </span>
-                ))
-              : null}
+                ))}
           </section>
         </main>
       ) : null}
