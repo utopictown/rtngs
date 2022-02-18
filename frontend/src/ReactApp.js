@@ -3,19 +3,28 @@ import Review from "./Review";
 import Stars from "./Stars";
 
 export function App() {
-  const initialInputRating = { rating: null, description: "" };
-  const initialStarState = Array(5).fill(false);
+  const initialInputRating = { rating: 0, description: "" };
+  const initialStars = Array(5).fill(false);
+  const initialErrorMessages = { rating: null, description: null };
 
   const [showModal, setShowModal] = useState(false);
   const [ratings, setRatings] = useState(null);
   const [inputRating, setInputRating] = useState(initialInputRating);
-  const [starState, setStarState] = useState(initialStarState);
+  const [stars, setStars] = useState(initialStars);
   const [activeStar, setActiveStar] = useState(null);
+  const [errorMessages, setErrorMessages] = useState(initialErrorMessages);
+
   const API_URL = process.env.API_URL;
 
   useEffect(() => {
-    setInputRating({ ...inputRating, rating: starState.filter((item) => item === true).length });
-  }, [starState]);
+    setInputRating({ ...inputRating, rating: stars.filter((item) => item === true).length });
+  }, [stars]);
+
+  useEffect(() => {
+    setActiveStar(null);
+    setInputRating(initialInputRating);
+    setStars(initialStars);
+  }, [showModal]);
 
   useEffect(async () => {
     const result = await fetchAPI("GET", API_URL);
@@ -27,24 +36,33 @@ export function App() {
   };
 
   const handleSelectStar = (i) => {
-    let newStars = starState;
+    let newStars = stars;
     if (activeStar === i) {
-      newStars = starState.map(() => false);
+      newStars = stars.map(() => false);
       setActiveStar(null);
     } else {
-      newStars = starState.map((_, j) => (j === i || j < i ? true : false));
+      newStars = stars.map((_, j) => (j === i || j < i ? true : false));
       setActiveStar(i);
     }
-    setStarState(newStars);
+    setStars(newStars);
   };
 
   const handleSubmit = async () => {
-    const response = await fetchAPI("POST", API_URL, inputRating);
-    setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
-    setShowModal(false);
-    setActiveStar(null);
-    setInputRating(initialInputRating);
-    setStarState(initialStarState);
+    let err = { rating: "", description: "" };
+
+    if (inputRating.rating === 0) err.rating = "Star is required";
+    if (inputRating.description === "") err.description = "Description is required";
+
+    setErrorMessages({ ...errorMessages, ...err });
+
+    const canSubmit = Object.keys(err).filter((keys) => err[keys] !== "").length > 0 ? false : true;
+
+    if (canSubmit) {
+      const response = await fetchAPI("POST", API_URL, inputRating);
+      setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
+      setShowModal(false);
+      setErrorMessages(initialErrorMessages);
+    }
   };
 
   const handleModalClick = (e) => {
@@ -112,7 +130,7 @@ export function App() {
             <h1>What’s your rating?</h1>
             <span>Rating</span>
             <span id="input-rate" className="input-rate">
-              {starState
+              {stars
                 .map((state, i) => {
                   return (
                     <div className="input-star" key={i}>
@@ -134,6 +152,13 @@ export function App() {
             <button id="submit-review" className="button submit-review" onClick={() => handleSubmit()}>
               Submit review
             </button>
+            {Object.keys(errorMessages).length > 0
+              ? Object.keys(errorMessages).map((error, i) => (
+                  <span key={i} className="error">
+                    {errorMessages[error]}
+                  </span>
+                ))
+              : null}
           </section>
         </main>
       ) : null}
