@@ -138,7 +138,7 @@ export function App() {
             {ratings && ratings.data.length ? (
               ratings.data.map((rating, key) => <Review key={key} rating={rating} />)
             ) : (
-              <p>Add the first review</p>
+              <p>Be the first to review</p>
             )}
           </div>
         </section>
