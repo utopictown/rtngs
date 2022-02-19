@@ -13,6 +13,14 @@ class Reviews(db.Model):
     rating = db.Column(db.Integer())
 
 
-def __init__(self, description, rating):
-    self.description = description
-    self.rating = rating
+    def __init__(self, description, rating):
+        self.description = description
+        self.rating = rating
+
+    @property
+    def serialized(self):
+        return {
+            'id': self.id,
+            'description': self.description,
+            'rating': self.rating,
+        }
