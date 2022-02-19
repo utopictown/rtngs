@@ -183,41 +183,52 @@ button:hover {
     height: 2rem;
     display: flex;
 
-    div {
+    div:nth-child(even) {
       margin-right: 1.4rem;
     }
 
     label {
-      background-image: url("./assets/empty-star.svg");
       width: 1.2rem;
       height: 1.2rem;
       position: absolute;
       background-size: contain;
     }
+    .input-star:nth-child(odd) > label {
+      background-image: url("./assets/empty-star.svg");
+    }
 
-    label.active {
+    .input-star:hover > label,
+    .input-star:nth-child(odd) > label.active {
       background-image: url("./assets/star.svg");
-      width: 1.2rem;
+      // transition: background-image 0.2s ease-in-out;
+    }
+
+    label.half {
+      width: 0.6rem;
       height: 1.2rem;
       position: absolute;
-      background-size: contain;
-      transition: background-image 0.2s ease-in-out;
+      background-size: 1.2rem;
+      right: 9px;
+      // transition: background-image 0.2s ease-in-out;
+    }
+
+    .input-star:hover ~ .input-star > label,
+    .input-star:hover > label.half,
+    label.half.active {
+      background-image: url("./assets/star.svg");
     }
 
     direction: rtl;
     margin-left: 1rem;
     justify-content: left;
 
-    .input-star:hover,
-    .input-star:hover ~ .input-star {
-      label {
-        background-image: url("./assets/star.svg");
-        width: 1.2rem;
-        height: 1.2rem;
-        position: absolute;
-        background-size: contain;
-        transition: background-image 0.2s ease-in-out;
-      }
+    .input-star:nth-child(odd) {
+      left: -22px;
+      position: relative;
+    }
+
+    .input-star:nth-child(even) {
+      position: relative;
     }
 
     input {

@@ -5,8 +5,9 @@ import { io } from "socket.io-client";
 
 export function App() {
   const API_URL = process.env.API_URL;
+  const multiplier = 2;
   const initialInputRating = { rating: 0, description: "" };
-  const initialStars = Array(5).fill(false);
+  const initialStars = Array(5 * multiplier).fill(false);
   const initialErrorMessages = { rating: null, description: null };
 
   const [showModal, setShowModal] = useState(false);
@@ -22,13 +23,12 @@ export function App() {
     const socket = io(API_URL + "/rtngs");
     setSocketClient(socket);
     socket.on("new_review", async (data) => {
-      console.log(data);
       setRatings(data);
     });
   }, []);
 
   useEffect(() => {
-    setInputRating({ ...inputRating, rating: stars.filter((item) => item === true).length });
+    setInputRating({ ...inputRating, rating: stars.filter((item) => item === true).length / multiplier });
   }, [stars]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function App() {
       newStars = stars.map(() => false);
       setActiveStar(null);
     } else {
-      newStars = stars.map((_, j) => (j === i || j < i ? true : false));
+      newStars = stars.map((_, j) => (j <= i ? true : false));
       setActiveStar(i);
     }
     setStars(newStars);
@@ -135,9 +135,11 @@ export function App() {
         <section className="reviews-container">
           <h3>Reviews</h3>
           <div id="reviews-wrapper">
-            {ratings && ratings.data.length
-              ? ratings.data.map((rating, key) => <Review key={key} rating={rating} />)
-              : null}
+            {ratings && ratings.data.length ? (
+              ratings.data.map((rating, key) => <Review key={key} rating={rating} />)
+            ) : (
+              <p>Add the first review</p>
+            )}
           </div>
         </section>
       </main>
@@ -151,7 +153,10 @@ export function App() {
                 .map((state, i) => {
                   return (
                     <div className="input-star" key={i}>
-                      <label className={state ? "active" : ""} onClick={() => handleSelectStar(i)}></label>
+                      <label
+                        className={(i % 2 == 0 ? "half " : "") + (state ? "active" : "")}
+                        onClick={() => handleSelectStar(i)}
+                      ></label>
                     </div>
                   );
                 })
