@@ -19,7 +19,7 @@ export function App() {
   const [socketClient, setSocketClient] = useState(null);
 
   useEffect(() => {
-    const socket = io(API_URL + "rtngs");
+    const socket = io(API_URL + "/rtngs");
     setSocketClient(socket);
     socket.on("new_review", async (data) => {
       console.log(data);
