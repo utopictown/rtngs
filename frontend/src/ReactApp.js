@@ -35,6 +35,7 @@ export function App() {
     setActiveStar(null);
     setInputRating(initialInputRating);
     setStars(initialStars);
+    setErrorMessages(initialErrorMessages);
   }, [showModal]);
 
   useEffect(async () => {
