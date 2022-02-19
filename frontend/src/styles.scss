@@ -220,7 +220,7 @@ button:hover {
 
     direction: rtl;
     margin-left: 1rem;
-    justify-content: left;
+    justify-content: flex-end;
 
     .input-star:nth-child(odd) {
       left: -22px;
