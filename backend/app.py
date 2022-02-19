@@ -11,9 +11,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rtngs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
-CORS(app, origins='*')
+CORS(app, origins=os.getenv('ALLOWED_URL').split(','))
 
-socketio = SocketIO(app, cors_allowed_origins='*')
+socketio = SocketIO(app, cors_allowed_origins=os.getenv('ALLOWED_URL').split(','))
 
 db.app = app
 db.init_app(app)
