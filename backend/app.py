@@ -47,7 +47,7 @@ def home():
 def get_average_rating(list = []):
     return floor(sum([data.rating for data in list]) / len(list)) if len(list) else 0
 
-@socketio.on('submit_review')
+@socketio.on('submit_review', namespace='/rtngs')
 def listen_post():
     reviews = Reviews.query.all()
     rating_avg = get_average_rating(reviews)
