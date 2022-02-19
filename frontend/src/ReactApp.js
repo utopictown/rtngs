@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Review from "./Review";
 import Stars from "./Stars";
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 export function App() {
   const API_URL = process.env.API_URL;
@@ -19,12 +19,12 @@ export function App() {
   const [socketClient, setSocketClient] = useState(null);
 
   useEffect(() => {
-    // const socket = io(API_URL);
-    // setSocketClient(socket);
-    // socket.on("new_review", async () => {
-    //   const result = await fetchAPI("GET", API_URL);
-    //   setRatings(result);
-    // });
+    const socket = io(API_URL);
+    setSocketClient(socket);
+    socket.on("new_review", async (data) => {
+      console.log(data);
+      // setRatings([...ratings, data]);
+    });
   }, []);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function App() {
 
     if (_canSubmit) {
       const response = await fetchAPI("POST", API_URL, inputRating);
-      // if (socketClient) socketClient.emit("submit_review");
+      if (socketClient) socketClient.emit("submit_review");
       setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
       setShowModal(false);
       setErrorMessages(initialErrorMessages);
