@@ -5,12 +5,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.reviews import Reviews
 from db import db
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rtngs.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 CORS(app, origins=os.getenv('ALLOWED_URL').split(','))
+
+socketio = SocketIO(app, cors_allowed_origins=os.getenv('ALLOWED_URL').split(','))
 
 db.app = app
 db.init_app(app)
@@ -44,5 +47,10 @@ def home():
 def get_average_rating(list = []):
     return floor(sum([data.rating for data in list]) / len(list)) if len(list) else 0
 
+@socketio.on('submit_review')
+def listen_post():
+    emit('new_review', [], broadcast=True)
+
 if __name__ == "__main__":
+    socketio.run(app)
     app.run(debug=False, host='0.0.0.0')

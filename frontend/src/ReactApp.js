@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Review from "./Review";
 import Stars from "./Stars";
+import { io } from "socket.io-client";
 
 export function App() {
+  const API_URL = process.env.API_URL;
   const initialInputRating = { rating: 0, description: "" };
   const initialStars = Array(5).fill(false);
   const initialErrorMessages = { rating: null, description: null };
@@ -14,8 +16,16 @@ export function App() {
   const [activeStar, setActiveStar] = useState(null);
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [socketClient, setSocketClient] = useState(null);
 
-  const API_URL = process.env.API_URL;
+  useEffect(() => {
+    const socket = io(API_URL);
+    setSocketClient(socket);
+    socket.on("new_review", async () => {
+      const result = await fetchAPI("GET", API_URL);
+      setRatings(result);
+    });
+  }, []);
 
   useEffect(() => {
     setInputRating({ ...inputRating, rating: stars.filter((item) => item === true).length });
@@ -61,6 +71,7 @@ export function App() {
 
     if (_canSubmit) {
       const response = await fetchAPI("POST", API_URL, inputRating);
+      if (socketClient) socketClient.emit("submit_review");
       setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
       setShowModal(false);
       setErrorMessages(initialErrorMessages);
