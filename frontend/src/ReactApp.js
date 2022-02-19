@@ -23,7 +23,7 @@ export function App() {
     setSocketClient(socket);
     socket.on("new_review", async (data) => {
       console.log(data);
-      // setRatings([...ratings, data]);
+      setRatings(data);
     });
   }, []);
 
@@ -70,9 +70,9 @@ export function App() {
     setCanSubmit(_canSubmit);
 
     if (_canSubmit) {
-      const response = await fetchAPI("POST", API_URL, inputRating);
+      await fetchAPI("POST", API_URL, inputRating);
       if (socketClient) socketClient.emit("submit_review");
-      setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
+      // setRatings({ ...ratings, data: [...ratings.data, inputRating], ratingAvg: response.ratingAvg });
       setShowModal(false);
       setErrorMessages(initialErrorMessages);
     }

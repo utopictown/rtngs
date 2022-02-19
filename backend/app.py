@@ -49,7 +49,9 @@ def get_average_rating(list = []):
 
 @socketio.on('submit_review')
 def listen_post():
-    emit('new_review', [], broadcast=True)
+    reviews = Reviews.query.all()
+    rating_avg = get_average_rating(reviews)
+    emit('new_review', {'data': [review.serialized for review in reviews], 'ratingAvg': rating_avg}, broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app)
