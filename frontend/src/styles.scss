@@ -256,3 +256,10 @@ button:hover {
     margin-bottom: 1rem;
   }
 }
+
+@media (max-width: 768px) {
+  .home {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
