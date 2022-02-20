@@ -25,7 +25,7 @@ def home():
         reviews = Reviews.query.all()
         rating_avg = get_average_rating(reviews)
 
-        return jsonify({'data': reviews, 'ratingAvg': rating_avg})
+        return jsonify({'data': reviews, 'ratingAvg': rating_avg['raw'], 'ratingAvgFloor': rating_avg['floored']})
     if request.method == 'POST':
         try:
             rating = request.json['rating']
@@ -45,7 +45,8 @@ def home():
         return "Invalid HTTP method."
 
 def get_average_rating(list = []):
-    return floor(sum([data.rating for data in list]) / len(list)) if len(list) else 0
+    avg = sum([data.rating for data in list]) / len(list) if len(list) else 0
+    return {'floored': floor(avg), 'raw': round(avg, 1)}
 
 @socketio.on('submit_review', namespace='/rtngs')
 def listen_post():
