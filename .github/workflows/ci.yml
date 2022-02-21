@@ -10,22 +10,20 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install --frozen-lockfile
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: test
+      - name: Check out branch
+        uses: actions/checkout@v2
+      - name: Use node.js ${ matrix.node-version }} - ${{ matrix.architecture }}
+        uses: actions/setup-node@v2
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Unit test
+        run: yarn test
   deploy:
     name: Deploy
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - name: deploy app to production
+      - name: Deploy app to production
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
