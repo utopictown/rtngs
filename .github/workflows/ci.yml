@@ -6,20 +6,20 @@ jobs:
   test:
     name: Automated Test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: borales/actions-yarn@v2.3.0
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
+          cmd: install --frozen-lockfile
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: test
   deploy:
     name: Deploy
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: deploy app to production
