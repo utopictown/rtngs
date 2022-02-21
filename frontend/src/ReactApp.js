@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Review from "./Review";
 import Stars from "./Stars";
 import { io } from "socket.io-client";
+import fetchAPI from "../utils/fetch-wrapper";
+import checkIfErrorExist from "../utils/check-error-exist";
 
 export function App() {
   const API_URL = process.env.API_URL;
@@ -81,36 +83,6 @@ export function App() {
 
   const handleModalClick = (e) => {
     if (e.target.id && e.target.id === "modal") setShowModal(false);
-  };
-
-  const checkIfErrorExist = (err) => {
-    return Object.keys(err).filter((keys) => err[keys] !== "").length > 0;
-  };
-
-  const fetchAPI = async (method, url, payload = {}) => {
-    const resources = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: method ?? "GET",
-      body: method != "GET" ? JSON.stringify(payload) : null,
-    };
-
-    const data = await fetch(url, resources);
-
-    let result = {
-      status: data.status,
-      ok: data.ok,
-    };
-
-    if (data.ok === true) {
-      result = { ...result, ...(await data.json()) };
-    } else {
-      result = [];
-    }
-
-    return result;
   };
 
   return (
