@@ -94,7 +94,7 @@ export function App() {
             <p id="hero-rating" className="rating">
               {ratings ? ratings.ratingAvg : ""}
             </p>
-            <div id="hero-stars" className="stars">
+            <div id="hero-stars" className="stars" data-testid="stars">
               <Stars count={ratings ? Math.floor(ratings.ratingAvg) : 0} />
             </div>
             <button id="add-review" className="button" onClick={() => setShowModal(!showModal)}>
@@ -108,7 +108,7 @@ export function App() {
         <section className="reviews-container">
           <h3>Reviews</h3>
           <div id="reviews-wrapper">
-            {ratings && ratings.data.length ? (
+            {ratings && ratings.data && ratings.data.length ? (
               ratings.data.map((rating, key) => <Review key={key} rating={rating} />)
             ) : (
               <p>Be the first to review</p>
@@ -121,7 +121,7 @@ export function App() {
           <section className="modal-container">
             <h1>What’s your rating?</h1>
             <span>Rating</span>
-            <span id="input-rate" className="input-rate">
+            <span id="input-rate" className="input-rate" data-testid="stars">
               {stars
                 .map((state, i) => {
                   return (
@@ -160,3 +160,5 @@ export function App() {
     </>
   );
 }
+
+export default App;
