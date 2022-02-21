@@ -38,7 +38,7 @@ def home():
             reviews = Reviews.query.all()
             rating_avg = get_average_rating(reviews)
 
-            return jsonify({'data': review,'ratingAvg': rating_avg, 'message': 'Submission created'}) 
+            return jsonify({'data': review,'ratingAvg': rating_avg['raw'], 'ratingAvgFloor': rating_avg['floored'], 'message': 'Submission created'}) 
         except:
             return jsonify({'message': 'Submission failed'}), 400
     else:
@@ -52,7 +52,7 @@ def get_average_rating(list = []):
 def listen_post():
     reviews = Reviews.query.all()
     rating_avg = get_average_rating(reviews)
-    emit('new_review', {'data': [review.serialized for review in reviews], 'ratingAvg': rating_avg}, broadcast=True)
+    emit('new_review', {'data': [review.serialized for review in reviews], 'ratingAvg': rating_avg['raw'], 'ratingAvgFloor': rating_avg['floored']}, broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app)
