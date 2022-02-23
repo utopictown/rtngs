@@ -154,6 +154,69 @@ button:hover {
   // transition: opacity 0.2s ease-in-out;
 }
 
+.input-rate {
+  position: relative;
+  height: 2rem;
+  display: flex;
+
+  div:nth-child(even) {
+    margin-right: 1.4rem;
+  }
+
+  label {
+    width: 1.2rem;
+    height: 1.2rem;
+    position: absolute;
+    background-size: contain;
+  }
+  .display-star:nth-child(odd) > label,
+  .input-star:nth-child(odd) > label {
+    background-image: url("./assets/empty-star.svg");
+  }
+
+  .display-star:nth-child(odd) > label.active,
+  .input-star:hover > label,
+  .input-star:nth-child(odd) > label.active {
+    background-image: url("./assets/star.svg");
+    // transition: background-image 0.2s ease-in-out;
+  }
+
+  label.half {
+    width: 0.6rem;
+    height: 1.2rem;
+    position: absolute;
+    background-size: 1.2rem;
+    right: 9px;
+    // transition: background-image 0.2s ease-in-out;
+  }
+
+  .display-star > label.half.active,
+  .input-star:hover ~ .input-star > label,
+  .input-star:hover > label.half,
+  label.half.active {
+    background-image: url("./assets/star.svg");
+  }
+
+  direction: rtl;
+  margin-left: 1rem;
+  justify-content: flex-end;
+
+  .display-star:nth-child(odd),
+  .input-star:nth-child(odd) {
+    left: -22px;
+    position: relative;
+  }
+
+  .display-star:nth-child(even),
+  .input-star:nth-child(even) {
+    position: relative;
+  }
+
+  input {
+    display: none;
+  }
+}
+
 .modal-container {
   display: flex;
   justify-content: center;
@@ -179,64 +242,6 @@ button:hover {
 
   span.error {
     color: red;
-  }
-
-  .input-rate {
-    position: relative;
-    height: 2rem;
-    display: flex;
-
-    div:nth-child(even) {
-      margin-right: 1.4rem;
-    }
-
-    label {
-      width: 1.2rem;
-      height: 1.2rem;
-      position: absolute;
-      background-size: contain;
-    }
-    .input-star:nth-child(odd) > label {
-      background-image: url("./assets/empty-star.svg");
-    }
-
-    .input-star:hover > label,
-    .input-star:nth-child(odd) > label.active {
-      background-image: url("./assets/star.svg");
-      // transition: background-image 0.2s ease-in-out;
-    }
-
-    label.half {
-      width: 0.6rem;
-      height: 1.2rem;
-      position: absolute;
-      background-size: 1.2rem;
-      right: 9px;
-      // transition: background-image 0.2s ease-in-out;
-    }
-
-    .input-star:hover ~ .input-star > label,
-    .input-star:hover > label.half,
-    label.half.active {
-      background-image: url("./assets/star.svg");
-    }
-
-    direction: rtl;
-    margin-left: 1rem;
-    justify-content: flex-end;
-
-    .input-star:nth-child(odd) {
-      left: -22px;
-      position: relative;
-    }
-
-    .input-star:nth-child(even) {
-      position: relative;
-    }
-
-    input {
-      display: none;
-    }
   }
 
   textarea {

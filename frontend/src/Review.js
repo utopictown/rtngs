@@ -6,7 +6,7 @@ function Review({ rating }) {
     <div className="review flex">
       <div className="review-item flex">
         <div className="stars" data-testid="review__stars">
-          <Stars count={rating.rating} />
+          <Stars count={rating.rating * 2} />
         </div>
         <p>
           <b>{rating.rating}</b>, <span>{rating.description}</span>

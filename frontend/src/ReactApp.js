@@ -15,7 +15,7 @@ export function App() {
   const [showModal, setShowModal] = useState(false);
   const [ratings, setRatings] = useState(null);
   const [inputRating, setInputRating] = useState(initialInputRating);
-  const [stars, setStars] = useState(initialStars);
+  const [inputStars, setInputStars] = useState(initialStars);
   const [activeStar, setActiveStar] = useState(null);
   const [errorMessages, setErrorMessages] = useState(initialErrorMessages);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -30,13 +30,13 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    setInputRating({ ...inputRating, rating: stars.filter((item) => item === true).length / multiplier });
-  }, [stars]);
+    setInputRating({ ...inputRating, rating: inputStars.filter((item) => item === true).length / multiplier });
+  }, [inputStars]);
 
   useEffect(() => {
     setActiveStar(null);
     setInputRating(initialInputRating);
-    setStars(initialStars);
+    setInputStars(initialStars);
     setErrorMessages(initialErrorMessages);
   }, [showModal]);
 
@@ -50,15 +50,15 @@ export function App() {
   };
 
   const handleSelectStar = (i) => {
-    let newStars = stars;
+    let newStars = inputStars;
     if (activeStar === i) {
-      newStars = stars.map(() => false);
+      newStars = inputStars.map(() => false);
       setActiveStar(null);
     } else {
-      newStars = stars.map((_, j) => (j <= i ? true : false));
+      newStars = inputStars.map((_, j) => (j <= i ? true : false));
       setActiveStar(i);
     }
-    setStars(newStars);
+    setInputStars(newStars);
   };
 
   const handleSubmit = async () => {
@@ -95,7 +95,7 @@ export function App() {
               {ratings ? ratings.ratingAvg : ""}
             </p>
             <div id="hero-stars" className="stars" data-testid="stars">
-              <Stars count={ratings ? Math.floor(ratings.ratingAvg) : 0} />
+              <Stars count={ratings ? Math.floor(ratings.ratingAvg / 0.5) * 0.5 * multiplier : 0} />
             </div>
             <button id="add-review" className="button" onClick={() => setShowModal(!showModal)}>
               Add review
@@ -116,13 +116,13 @@ export function App() {
           </div>
         </section>
       </main>
-      {showModal ? (
+      {showModal && (
         <main id="modal" onClick={(e) => handleModalClick(e)}>
           <section className="modal-container">
             <h1>What’s your rating?</h1>
             <span>Rating</span>
             <span id="input-rate" className="input-rate" data-testid="stars">
-              {stars
+              {inputStars
                 .map((state, i) => {
                   return (
                     <div className="input-star" key={i}>
@@ -156,7 +156,7 @@ export function App() {
                 ))}
           </section>
         </main>
-      ) : null}
+      )}
     </>
   );
 }
