@@ -53,9 +53,6 @@ test("loads root component", async () => {
   const avgStars = await screen.findByTestId("avg-stars");
   expect(avgStars.childNodes.length).toBe(1);
 
-  const reviewStars = await screen.findByTestId("review-stars");
-  expect(reviewStars.childNodes.length).toBe(1);
-
   const descItemEl = await screen.findByText("Plot was meh, but will consider to reread");
   expect(descItemEl).toBeTruthy();
 });

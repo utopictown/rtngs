@@ -121,7 +121,7 @@ export function App() {
           <section className="modal-container">
             <h1>What’s your rating?</h1>
             <span>Rating</span>
-            <span id="input-rate" className="input-rate" data-testid="review-stars">
+            <span id="input-rate" className="input-rate">
               {inputStars
                 .map((state, i) => {
                   return (
