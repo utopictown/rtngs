@@ -50,8 +50,11 @@ test("loads root component", async () => {
   const reviewTextEl = await screen.findByText("Reviews");
   expect(reviewTextEl).toBeTruthy();
 
-  const starEls = await screen.findByTestId("stars");
-  expect(starEls.childNodes.length).toBe(5);
+  const avgStars = await screen.findByTestId("avg-stars");
+  expect(avgStars.childNodes.length).toBe(1);
+
+  const reviewStars = await screen.findByTestId("review-stars");
+  expect(reviewStars.childNodes.length).toBe(1);
 
   const descItemEl = await screen.findByText("Plot was meh, but will consider to reread");
   expect(descItemEl).toBeTruthy();

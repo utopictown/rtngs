@@ -7,5 +7,5 @@ test("renders Review component", async () => {
   const { container } = render(<Review rating={5} />);
   expect(container).toBeTruthy();
   const starEls = await screen.findByTestId("review__stars");
-  expect(starEls.childNodes.length).toBe(5);
+  expect(starEls.childNodes.length).toBe(1);
 });

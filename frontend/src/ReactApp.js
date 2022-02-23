@@ -94,7 +94,7 @@ export function App() {
             <p id="hero-rating" className="rating">
               {ratings ? ratings.ratingAvg : ""}
             </p>
-            <div id="hero-stars" className="stars" data-testid="stars">
+            <div id="hero-stars" className="stars" data-testid="avg-stars">
               <Stars count={ratings ? Math.floor(ratings.ratingAvg / 0.5) * 0.5 * multiplier : 0} />
             </div>
             <button id="add-review" className="button" onClick={() => setShowModal(!showModal)}>
@@ -121,7 +121,7 @@ export function App() {
           <section className="modal-container">
             <h1>What’s your rating?</h1>
             <span>Rating</span>
-            <span id="input-rate" className="input-rate" data-testid="stars">
+            <span id="input-rate" className="input-rate" data-testid="review-stars">
               {inputStars
                 .map((state, i) => {
                   return (
